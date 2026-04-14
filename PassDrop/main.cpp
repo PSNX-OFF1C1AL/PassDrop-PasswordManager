@@ -20,6 +20,7 @@
 #include <unordered_map>
 #include <codecvt>
 #include <ctime>
+#include <dxgi.h>
 
 #include "imgui.h"
 #include "imgui_impl_win32.h"
@@ -90,6 +91,7 @@ static const char* COLOR_NAMES[] = {
 
 // ==================== Global Variables ====================
 HWND g_hWnd = nullptr;
+HINSTANCE g_hInstance = nullptr;
 DataStore g_dataStore;
 std::vector<Account> g_accounts;
 char g_search[256] = "";
@@ -207,7 +209,7 @@ void AddTrayIcon() {
     g_nid.uCallbackMessage = WM_TRAYICON;
 
     
-    g_nid.hIcon = (HICON)LoadImageW(nullptr, L"app.ico", IMAGE_ICON, 0, 0, LR_LOADFROMFILE | LR_DEFAULTSIZE);
+    g_nid.hIcon = LoadIcon(g_hInstance, MAKEINTRESOURCE(IDI_MAIN_ICON));
     if (!g_nid.hIcon) {
         g_nid.hIcon = LoadIcon(nullptr, IDI_APPLICATION); // Fallback
     }
@@ -1081,13 +1083,14 @@ void RenderUI() {
 
 // ==================== Entry Point ====================
 int WINAPI wWinMain(HINSTANCE hInst, HINSTANCE, PWSTR, int) {
+    g_hInstance = hInst;
     // Register window class 
     WNDCLASSEXW wc = { sizeof(wc) };
     wc.style = CS_OWNDC;
     wc.lpfnWndProc = WndProc;
-    wc.hInstance = hInst;
-    wc.hIcon = LoadIcon(nullptr, IDI_APPLICATION);       
-    wc.hIconSm = LoadIcon(nullptr, IDI_APPLICATION);     
+    wc.hInstance = g_hInstance;
+    wc.hIcon = LoadIcon(g_hInstance, MAKEINTRESOURCE(IDI_MAIN_ICON));
+    wc.hIconSm = LoadIcon(g_hInstance, MAKEINTRESOURCE(IDI_MAIN_ICON));
     wc.hCursor = LoadCursor(nullptr, IDC_ARROW);
     wc.hbrBackground = (HBRUSH)(COLOR_WINDOW + 1);
     wc.lpszClassName = L"PassDrop";
