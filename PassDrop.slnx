@@ -1,0 +1,7 @@
+<Solution>
+  <Configurations>
+    <Platform Name="x64" />
+    <Platform Name="x86" />
+  </Configurations>
+  <Project Path="PassDrop/PassDrop.vcxproj" Id="73c4b7ae-68b3-46fa-8adf-e937d0800c0a" />
+</Solution>
